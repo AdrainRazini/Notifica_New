@@ -1,44 +1,76 @@
 const container = document.getElementById('noticias-container');
-const API_KEY = '71304c47d70dadf9040bd81ed5911de8';
+const campoBusca = document.getElementById('busca');
 
-async function buscarNoticias(query = '') {
- const url = `https://api.mediastack.com/v1/news?access_key=${API_KEY}&countries=br&languages=pt&limit=10&keywords=${encodeURIComponent(query)}`;
+// Lista de RSS de sites confiáveis
+const fontes = [
+  { nome: "G1", rss: "https://g1.globo.com/rss/g1/" },
+  { nome: "Estadão", rss: "https://www.estadao.com.br/rss/ultimas.xml" },
+  { nome: "BBC", rss: "http://feeds.bbci.co.uk/portuguese/rss.xml" },
+  { nome: "CNN Brasil", rss: "https://www.cnnbrasil.com.br/feed/" }
+];
 
-  
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-    container.innerHTML = '';
+let todasNoticias = [];
 
-    data.data.forEach(noticia => {
-      const card = document.createElement('div');
-      const descricao = noticia.description || '';
-      const isLonga = descricao.length > 250; // ajustável
+async function carregarNoticias() {
+  todasNoticias = [];
 
-      card.className = 'noticia';
-      if (isLonga) card.classList.add('longa');
-
-      card.innerHTML = `
-        <img src="${noticia.image || 'https://via.placeholder.com/300x180?text=Sem+Imagem'}" />
-        <div class="conteudo">
-          <h2>${noticia.title}</h2>
-          <p>${descricao}</p>
-          <a href="${noticia.url}" target="_blank">Ler mais</a>
-        </div>
-      `;
+  for (const fonte of fontes) {
+    const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(fonte.rss)}`;
+    
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
       
-      container.appendChild(card);
-    });
-  } catch (err) {
-    console.error('Erro ao buscar notícias:', err);
-    container.innerHTML = '<p>Erro ao carregar notícias.</p>';
+      const noticias = json.items.map(n => ({
+        titulo: `[${fonte.nome}] ${n.title}`,
+        descricao: n.description.replace(/<[^>]*>?/gm, '').slice(0, 200),
+        imagem: n.thumbnail || 'https://via.placeholder.com/300x180?text=Sem+Imagem',
+        link: n.link
+      }));
+
+      todasNoticias.push(...noticias);
+    } catch (err) {
+      console.error(`Erro ao carregar de ${fonte.nome}`, err);
+    }
   }
+
+  renderizarNoticias(todasNoticias);
 }
 
-buscarNoticias();
-document.getElementById('busca').addEventListener('input', e => {
-  buscarNoticias(e.target.value);
+function renderizarNoticias(noticias) {
+  container.innerHTML = '';
+
+  if (noticias.length === 0) {
+    container.innerHTML = '<p>Nenhuma notícia encontrada.</p>';
+    return;
+  }
+
+  noticias.forEach(noticia => {
+    const card = document.createElement('div');
+    card.className = 'noticia';
+
+    card.innerHTML = `
+      <img src="${noticia.imagem}" />
+      <div class="conteudo">
+        <h2>${noticia.titulo}</h2>
+        <p>${noticia.descricao}...</p>
+        <a href="${noticia.link}" target="_blank">Ler mais</a>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+// Filtro em tempo real
+campoBusca.addEventListener('input', () => {
+  const termo = campoBusca.value.toLowerCase();
+  const filtradas = todasNoticias.filter(n => 
+    n.titulo.toLowerCase().includes(termo) || 
+    n.descricao.toLowerCase().includes(termo)
+  );
+  renderizarNoticias(filtradas);
 });
 
-window.gerenciar_url = () => window.location.href = 'admin.html';
-window.users_url = () => window.location.href = 'users.html';
+// Inicial
+carregarNoticias();
