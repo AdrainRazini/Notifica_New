@@ -281,7 +281,27 @@ footer {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
+
+  max-height: 80vh;         /* altura máxima visível */
+  overflow-y: auto;         /* scroll quando necessário */
+  padding-right: 8px;       /* espaço para barra de rolagem */
+  scroll-behavior: smooth;  /* rolagem suave */
 }
+
+/* Scroll estilizado opcional (Chrome, Edge) */
+.container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.container::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
 
 .noticia {
   display: flex;
