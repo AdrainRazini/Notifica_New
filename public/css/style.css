@@ -379,6 +379,31 @@ footer {
   }
 }
 
+#paginacao {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#paginacao button {
+  margin: 0 5px;
+  padding: 6px 12px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+#paginacao button:hover {
+  background: #ccc;
+}
+
+#paginacao button.ativo {
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
 
 /*=======================================*/
 /*             Usuário e Login           */
