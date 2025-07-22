@@ -1,5 +1,5 @@
 const container = document.getElementById('noticias-container');
-const API_KEY = 'aeb4547041aff4dcd2f73d10d8469552';
+const API_KEY = '71304c47d70dadf9040bd81ed5911de8';
 
 async function buscarNoticias(query = '') {
  const url = `https://api.mediastack.com/v1/news?access_key=${API_KEY}&countries=br&languages=pt&limit=10&keywords=${encodeURIComponent(query)}`;
