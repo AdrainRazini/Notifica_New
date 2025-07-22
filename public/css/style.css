@@ -294,6 +294,27 @@ footer {
   height: 200px;
 }
 
+/* parte que rola */
+.noticia .conteudo {
+  width: 65%;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto; /* 🔁 permite rolar */
+  scroll-behavior: smooth;
+}
+
+/* estilizar barra de rolagem */
+.noticia .conteudo::-webkit-scrollbar {
+  width: 5px;
+}
+
+.noticia .conteudo::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
 .noticia:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
