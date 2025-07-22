@@ -4,9 +4,15 @@ const campoBusca = document.getElementById('busca');
 // Lista de RSS de sites confiáveis
 const fontes = [
   { nome: "G1", rss: "https://g1.globo.com/rss/g1/" },
+  { nome: "Globo Mundo", rss: "https://g1.globo.com/rss/g1/mundo/" },
+  { nome: "Globo Brasil", rss: "https://g1.globo.com/rss/g1/brasil/" },
   { nome: "Estadão", rss: "https://www.estadao.com.br/rss/ultimas.xml" },
+  { nome: "Folha", rss: "https://feeds.folha.uol.com.br/emcimadahora/rss091.xml" },
   { nome: "BBC", rss: "http://feeds.bbci.co.uk/portuguese/rss.xml" },
-  { nome: "CNN Brasil", rss: "https://www.cnnbrasil.com.br/feed/" }
+  { nome: "CNN Brasil", rss: "https://www.cnnbrasil.com.br/feed/" },
+  { nome: "R7", rss: "https://www.r7.com/rss/" },
+  { nome: "UOL", rss: "https://rss.uol.com.br/feed/noticias.xml" },
+  { nome: "Terra", rss: "https://www.terra.com.br/rss/0,,EI1,00.xml" }
 ];
 
 let todasNoticias = [];
